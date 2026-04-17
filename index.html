@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1a73e8" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="GPay Demo" />
+  <meta name="description" content="Google Pay UI Demo App - Educational Purpose Only" />
+  <title>GPay Demo</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- html5-qrcode library -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+
+  <!-- App Shell -->
+  <div id="app">
+
+    <!-- ===== HOME SCREEN ===== -->
+    <div id="screen-home" class="screen active">
+      <div class="home-header">
+        <div class="home-profile">
+          <div class="avatar" id="home-avatar">R</div>
+          <div class="profile-info">
+            <div class="greeting">Good morning,</div>
+            <div class="username" id="home-username">Rahul Sharma</div>
+          </div>
+        </div>
+        <div class="header-icons">
+          <button class="icon-btn" onclick="showScreen('screen-notifications')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Balance Card -->
+      <div class="balance-card">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-amount" id="balance-display">₹12,450.00</div>
+        <div class="balance-upi">UPI: rahul.sharma@okaxis</div>
+        <div class="balance-glow"></div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="action-btn" onclick="showScreen('screen-send')">
+          <div class="action-icon send-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <span>Pay</span>
+        </button>
+        <button class="action-btn" onclick="showScreen('screen-scan')">
+          <div class="action-icon scan-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="14" width="2" height="2"/><rect x="17" y="19" width="4" height="2"/><rect x="14" y="17" width="2" height="2"/></svg>
+          </div>
+          <span>Scan QR</span>
+        </button>
+        <button class="action-btn" onclick="showScreen('screen-history')">
+          <div class="action-icon history-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span>History</span>
+        </button>
+        <button class="action-btn" onclick="showScreen('screen-receive')">
+          <div class="action-icon receive-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <span>Receive</span>
+        </button>
+      </div>
+
+      <!-- People Section -->
+      <div class="section">
+        <div class="section-header">
+          <span>People</span>
+          <button class="see-all" onclick="showScreen('screen-send')">See all</button>
+        </div>
+        <div class="people-row">
+          <button class="person-chip" onclick="quickPay('Priya Mehta','priya.mehta@oksbi')">
+            <div class="person-avatar" style="background:#e8f0fe;color:#1a73e8">P</div>
+            <span>Priya</span>
+          </button>
+          <button class="person-chip" onclick="quickPay('Amit Kumar','amit.kumar@paytm')">
+            <div class="person-avatar" style="background:#fce8e6;color:#d93025">A</div>
+            <span>Amit</span>
+          </button>
+          <button class="person-chip" onclick="quickPay('Sneha Rao','sneha.rao@ybl')">
+            <div class="person-avatar" style="background:#e6f4ea;color:#137333">S</div>
+            <span>Sneha</span>
+          </button>
+          <button class="person-chip" onclick="quickPay('Vikram Singh','vikram.s@okicici')">
+            <div class="person-avatar" style="background:#fef7e0;color:#b06000">V</div>
+            <span>Vikram</span>
+          </button>
+          <button class="person-chip" onclick="showScreen('screen-send')">
+            <div class="person-avatar" style="background:#f1f3f4;color:#5f6368">+</div>
+            <span>New</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="section">
+        <div class="section-header">
+          <span>Recent</span>
+          <button class="see-all" onclick="showScreen('screen-history')">See all</button>
+        </div>
+        <div id="home-transactions" class="transaction-list"></div>
+      </div>
+
+      <!-- Offers Banner -->
+      <div class="offers-section">
+        <div class="offer-card">
+          <div class="offer-icon">🎁</div>
+          <div class="offer-text">
+            <div class="offer-title">Earn ₹50 cashback</div>
+            <div class="offer-sub">Pay 3 bills this month</div>
+          </div>
+          <div class="offer-badge">New</div>
+        </div>
+      </div>
+
+      <div style="height:80px"></div>
+    </div>
+
+    <!-- ===== SCAN QR SCREEN ===== -->
+    <div id="screen-scan" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="topbar-title">Scan QR Code</span>
+        <button class="icon-btn" onclick="toggleFlash()" id="flash-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </button>
+      </div>
+
+      <div class="scan-container">
+        <div class="scan-hint">Position QR code in the frame</div>
+        <div class="qr-frame-container">
+          <div id="qr-reader"></div>
+          <div class="qr-overlay">
+            <div class="qr-corner tl"></div>
+            <div class="qr-corner tr"></div>
+            <div class="qr-corner bl"></div>
+            <div class="qr-corner br"></div>
+            <div class="scan-line"></div>
+          </div>
+        </div>
+
+        <div class="scan-actions">
+          <button class="scan-alt-btn" onclick="simulateScan()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+            Demo Scan
+          </button>
+          <button class="scan-alt-btn" onclick="showScreen('screen-send')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enter UPI ID
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SEND / PAYMENT SCREEN ===== -->
+    <div id="screen-send" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="topbar-title">Send Money</span>
+      </div>
+
+      <div class="send-container">
+        <div class="upi-input-section">
+          <label class="input-label">UPI ID or Phone Number</label>
+          <div class="upi-input-wrap">
+            <input type="text" id="upi-input" class="upi-input" placeholder="example@upi or 9876543210"
+              oninput="validateUPI(this.value)" />
+            <button class="verify-btn" id="verify-btn" onclick="verifyUPI()">Verify</button>
+          </div>
+        </div>
+
+        <!-- Recipient Card (hidden until verified) -->
+        <div id="recipient-card" class="recipient-card hidden">
+          <div class="recipient-avatar-lg" id="rec-avatar">P</div>
+          <div class="recipient-info">
+            <div class="recipient-name" id="rec-name">Priya Mehta</div>
+            <div class="recipient-upi" id="rec-upi">priya@oksbi</div>
+            <div class="verified-badge">✓ Verified</div>
+          </div>
+        </div>
+
+        <!-- Amount Section -->
+        <div id="amount-section" class="amount-section hidden">
+          <div class="amount-display">
+            <span class="amount-rupee">₹</span>
+            <span id="amount-digits" class="amount-digits">0</span>
+          </div>
+          <div class="numpad">
+            <button class="num-btn" onclick="numInput('1')">1</button>
+            <button class="num-btn" onclick="numInput('2')">2</button>
+            <button class="num-btn" onclick="numInput('3')">3</button>
+            <button class="num-btn" onclick="numInput('4')">4</button>
+            <button class="num-btn" onclick="numInput('5')">5</button>
+            <button class="num-btn" onclick="numInput('6')">6</button>
+            <button class="num-btn" onclick="numInput('7')">7</button>
+            <button class="num-btn" onclick="numInput('8')">8</button>
+            <button class="num-btn" onclick="numInput('9')">9</button>
+            <button class="num-btn" onclick="numInput('.')">.</button>
+            <button class="num-btn" onclick="numInput('0')">0</button>
+            <button class="num-btn del-btn" onclick="numDelete()">⌫</button>
+          </div>
+
+          <div class="quick-amounts">
+            <button onclick="setAmount('100')">₹100</button>
+            <button onclick="setAmount('200')">₹200</button>
+            <button onclick="setAmount('500')">₹500</button>
+            <button onclick="setAmount('1000')">₹1000</button>
+          </div>
+
+          <div class="note-section">
+            <input type="text" id="payment-note" class="note-input" placeholder="Add a note (optional)" maxlength="50" />
+          </div>
+
+          <button class="pay-btn" id="pay-now-btn" onclick="showPinScreen()">
+            <span>Pay Now</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== UPI PIN SCREEN ===== -->
+    <div id="screen-pin" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="topbar-title">Enter UPI PIN</span>
+      </div>
+      <div class="pin-container">
+        <div class="pin-header">
+          <div class="bank-logo">🏦</div>
+          <div class="pin-bank-name">Axis Bank UPI</div>
+          <div class="pin-amount-show">Paying <strong id="pin-amount-label">₹0</strong></div>
+          <div class="pin-to-show">to <span id="pin-to-label">—</span></div>
+        </div>
+        <div class="pin-dots">
+          <div class="pin-dot" id="dot-1"></div>
+          <div class="pin-dot" id="dot-2"></div>
+          <div class="pin-dot" id="dot-3"></div>
+          <div class="pin-dot" id="dot-4"></div>
+          <div class="pin-dot" id="dot-5"></div>
+          <div class="pin-dot" id="dot-6"></div>
+        </div>
+        <div class="pin-hint">Enter your 6-digit UPI PIN</div>
+        <div class="pin-numpad">
+          <button class="pin-num" onclick="pinInput('1')">1</button>
+          <button class="pin-num" onclick="pinInput('2')">2</button>
+          <button class="pin-num" onclick="pinInput('3')">3</button>
+          <button class="pin-num" onclick="pinInput('4')">4</button>
+          <button class="pin-num" onclick="pinInput('5')">5</button>
+          <button class="pin-num" onclick="pinInput('6')">6</button>
+          <button class="pin-num" onclick="pinInput('7')">7</button>
+          <button class="pin-num" onclick="pinInput('8')">8</button>
+          <button class="pin-num" onclick="pinInput('9')">9</button>
+          <div class="pin-num-empty"></div>
+          <button class="pin-num" onclick="pinInput('0')">0</button>
+          <button class="pin-num pin-del" onclick="pinDelete()">⌫</button>
+        </div>
+        <div class="pin-footer">🔒 Secured by UPI (Demo Only)</div>
+      </div>
+    </div>
+
+    <!-- ===== PROCESSING SCREEN ===== -->
+    <div id="screen-processing" class="screen">
+      <div class="processing-container">
+        <div class="processing-animation">
+          <div class="proc-ring"></div>
+          <div class="proc-ring"></div>
+          <div class="proc-ring"></div>
+          <div class="proc-logo">G</div>
+        </div>
+        <div class="proc-text">Processing Payment…</div>
+        <div class="proc-subtext" id="proc-status">Connecting to bank</div>
+        <div class="proc-steps">
+          <div class="proc-step" id="step-1">
+            <div class="step-dot active"></div>
+            <span>Initiating</span>
+          </div>
+          <div class="proc-step" id="step-2">
+            <div class="step-dot"></div>
+            <span>Verifying</span>
+          </div>
+          <div class="proc-step" id="step-3">
+            <div class="step-dot"></div>
+            <span>Completing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SUCCESS SCREEN ===== -->
+    <div id="screen-success" class="screen">
+      <div class="success-container">
+        <div class="success-circle">
+          <svg class="checkmark" viewBox="0 0 52 52">
+            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="checkmark-check" fill="none" d="M14 27l7 7 17-17"/>
+          </svg>
+        </div>
+        <div class="success-title">Payment Successful!</div>
+        <div class="success-amount" id="success-amount">₹500</div>
+        <div class="success-to">Paid to <span id="success-to">Priya Mehta</span></div>
+
+        <div class="receipt-card">
+          <div class="receipt-row">
+            <span class="receipt-label">Transaction ID</span>
+            <span class="receipt-value" id="receipt-txnid">—</span>
+          </div>
+          <div class="receipt-divider"></div>
+          <div class="receipt-row">
+            <span class="receipt-label">UPI Ref No.</span>
+            <span class="receipt-value" id="receipt-upi">—</span>
+          </div>
+          <div class="receipt-divider"></div>
+          <div class="receipt-row">
+            <span class="receipt-label">Date & Time</span>
+            <span class="receipt-value" id="receipt-datetime">—</span>
+          </div>
+          <div class="receipt-divider"></div>
+          <div class="receipt-row">
+            <span class="receipt-label">Status</span>
+            <span class="receipt-value success-status">✓ Success</span>
+          </div>
+        </div>
+
+        <div class="success-actions">
+          <button class="success-btn-outline" onclick="shareReceipt()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+          <button class="success-btn-primary" onclick="goHome()">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TRANSACTION HISTORY ===== -->
+    <div id="screen-history" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="topbar-title">Transactions</span>
+        <button class="icon-btn" onclick="clearHistory()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </button>
+      </div>
+      <div class="history-filter">
+        <button class="filter-chip active" onclick="filterHistory('all',this)">All</button>
+        <button class="filter-chip" onclick="filterHistory('sent',this)">Sent</button>
+        <button class="filter-chip" onclick="filterHistory('received',this)">Received</button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </div>
+
+    <!-- ===== RECEIVE / QR SCREEN ===== -->
+    <div id="screen-receive" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="topbar-title">Receive Money</span>
+      </div>
+      <div class="receive-container">
+        <div class="receive-profile">
+          <div class="receive-avatar" id="receive-avatar">R</div>
+          <div class="receive-name" id="receive-name">Rahul Sharma</div>
+          <div class="receive-upi">rahul.sharma@okaxis</div>
+        </div>
+        <div class="qr-code-display">
+          <canvas id="qr-canvas" width="220" height="220"></canvas>
+        </div>
+        <div class="receive-hint">Ask sender to scan this QR code</div>
+        <div class="amount-request">
+          <input type="number" id="request-amount" class="request-amount-input" placeholder="Request amount (optional)" />
+        </div>
+        <button class="share-qr-btn" onclick="shareQR()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share QR Code
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATIONS SCREEN ===== -->
+    <div id="screen-notifications" class="screen">
+      <div class="topbar">
+        <button class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="topbar-title">Notifications</span>
+      </div>
+      <div class="notif-list">
+        <div class="notif-item">
+          <div class="notif-icon" style="background:#e6f4ea">✅</div>
+          <div class="notif-body">
+            <div class="notif-title">Payment Received</div>
+            <div class="notif-sub">₹500 from Amit Kumar</div>
+            <div class="notif-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:#fce8e6">📤</div>
+          <div class="notif-body">
+            <div class="notif-title">Money Sent</div>
+            <div class="notif-sub">₹1,200 to Sneha Rao</div>
+            <div class="notif-time">Yesterday</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon" style="background:#fef7e0">🎁</div>
+          <div class="notif-body">
+            <div class="notif-title">Cashback Credited</div>
+            <div class="notif-sub">₹25 cashback on your last payment</div>
+            <div class="notif-time">2 days ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end #app -->
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-item active" onclick="goHome(); setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" onclick="showScreen('screen-history'); setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </button>
+    <button class="nav-item scan-nav-btn" onclick="showScreen('screen-scan')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+    </button>
+    <button class="nav-item" onclick="showScreen('screen-receive'); setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Receive</span>
+    </button>
+    <button class="nav-item" onclick="showProfile(); setNav(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
