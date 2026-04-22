@@ -196,10 +196,8 @@ function handleScannedQR(text) {
 
 function guessName(upi) {
   const part = upi.split('@')[0];
-
-  if (/^\d+$/.test(part)) {
-    return "UPI User";
-  }
+  return part.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
 
   return part
     .replace(/[._]/g, ' ')
