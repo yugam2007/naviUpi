@@ -196,7 +196,19 @@ function handleScannedQR(text) {
 
 function guessName(upi) {
   const part = upi.split('@')[0];
-  return part.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+  if (/^\d+$/.test(part)) {
+    return "UPI User";
+  }
+
+  return part
+    .replace(/[._]/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+  return part
+    .replace(/[._]/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
 }
 
 function toggleFlash() {
